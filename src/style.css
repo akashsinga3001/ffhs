@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+/* Plain :root, not @theme — these tokens are consumed via var() in inline
+   styles rather than generated Tailwind utility classes, and @theme prunes
+   any custom property with no corresponding utility class in the templates. */
+:root {
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-status-good: #0ca30c;
+  --color-status-warning: #fab219;
+  --color-status-serious: #ec835a;
+  --color-status-critical: #d03b3b;
+
+  --color-surface: #ffffff;
+  --color-surface-2: #f6f6f8;
+  --color-page: #f4f4f6;
+  --color-ink-primary: #0a0a0b;
+  --color-ink-secondary: #63656b;
+  --color-ink-muted: #94969c;
+  --color-track: #e8e8eb;
+  --color-hairline: #e5e5e8;
+  --color-delta-good: #006300;
+  --color-delta-bad: #d03b3b;
+
+  --color-accent: #2a78d6;
+  --color-accent-wash: #eef3fc;
+  --color-inverted-text: #ffffff;
+
+  --shadow-sm: 0 1px 2px rgba(10, 10, 11, 0.04);
+  --shadow-md: 0 1px 3px rgba(10, 10, 11, 0.06), 0 4px 12px -4px rgba(10, 10, 11, 0.06);
+  --shadow-lg: 0 4px 8px rgba(10, 10, 11, 0.05), 0 16px 32px -12px rgba(10, 10, 11, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme='light'])) {
+    --color-surface: #18181b;
+    --color-surface-2: #202023;
+    --color-page: #0a0a0b;
+    --color-ink-primary: #f5f5f6;
+    --color-ink-secondary: #a6a7ad;
+    --color-ink-muted: #717278;
+    --color-track: #29292d;
+    --color-hairline: #29292d;
+    --color-delta-good: #0ca30c;
+    --color-delta-bad: #e66767;
+    --color-accent: #4c92e8;
+    --color-accent-wash: #17233a;
+    --color-inverted-text: #0a0a0b;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.3), 0 16px 32px -12px rgba(0, 0, 0, 0.5);
+  }
+}
+:root[data-theme='dark'] {
+  --color-surface: #18181b;
+  --color-surface-2: #202023;
+  --color-page: #0a0a0b;
+  --color-ink-primary: #f5f5f6;
+  --color-ink-secondary: #a6a7ad;
+  --color-ink-muted: #717278;
+  --color-track: #29292d;
+  --color-hairline: #29292d;
+  --color-delta-good: #0ca30c;
+  --color-delta-bad: #e66767;
+  --color-accent: #4c92e8;
+  --color-accent-wash: #17233a;
+  --color-inverted-text: #0a0a0b;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.3), 0 16px 32px -12px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  border-color: var(--color-hairline);
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink-primary);
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+}
+
+input,
+select,
+button {
+  font-family: inherit;
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent-wash);
+  color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
