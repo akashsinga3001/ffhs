@@ -34,7 +34,10 @@ const dashoffset = computed(() => CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, a
         />
       </svg>
       <div class="absolute inset-0 flex flex-col items-center justify-center">
-        <span class="text-6xl font-semibold tabular-nums tracking-tight text-[var(--color-ink-primary)]">
+        <span
+          class="text-7xl tabular-nums tracking-tight text-[var(--color-ink-primary)]"
+          style="font-family: var(--font-serif); font-weight: 520"
+        >
           {{ Math.round(animatedScore) }}
         </span>
         <span class="text-sm text-[var(--color-ink-muted)]">/ 1000</span>

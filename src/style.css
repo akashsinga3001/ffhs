@@ -6,69 +6,72 @@
    any custom property with no corresponding utility class in the templates. */
 :root {
   --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
 
+  /* Status colors are fixed regardless of brand palette — they're the
+     severity language for score meters and must never be reinterpreted. */
   --color-status-good: #0ca30c;
   --color-status-warning: #fab219;
   --color-status-serious: #ec835a;
   --color-status-critical: #d03b3b;
-
-  --color-surface: #ffffff;
-  --color-surface-2: #f6f6f8;
-  --color-page: #f4f4f6;
-  --color-ink-primary: #0a0a0b;
-  --color-ink-secondary: #63656b;
-  --color-ink-muted: #94969c;
-  --color-track: #e8e8eb;
-  --color-hairline: #e5e5e8;
   --color-delta-good: #006300;
   --color-delta-bad: #d03b3b;
 
-  --color-accent: #2a78d6;
-  --color-accent-wash: #eef3fc;
-  --color-inverted-text: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f2ebdd;
+  --color-page: #faf6ee;
+  --color-ink-primary: #221b13;
+  --color-ink-secondary: #6c5f4d;
+  --color-ink-muted: #9c8f78;
+  --color-track: #e8ddc7;
+  --color-hairline: #e5dac3;
 
-  --shadow-sm: 0 1px 2px rgba(10, 10, 11, 0.04);
-  --shadow-md: 0 1px 3px rgba(10, 10, 11, 0.06), 0 4px 12px -4px rgba(10, 10, 11, 0.06);
-  --shadow-lg: 0 4px 8px rgba(10, 10, 11, 0.05), 0 16px 32px -12px rgba(10, 10, 11, 0.12);
+  --color-accent: #c1502e;
+  --color-accent-wash: #fbe8de;
+  --color-inverted-text: #fdf9f1;
+
+  --shadow-sm: 0 1px 2px rgba(34, 27, 19, 0.05);
+  --shadow-md: 0 1px 3px rgba(34, 27, 19, 0.07), 0 6px 16px -6px rgba(34, 27, 19, 0.09);
+  --shadow-lg: 0 4px 10px rgba(34, 27, 19, 0.06), 0 20px 40px -14px rgba(34, 27, 19, 0.16);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme='light'])) {
-    --color-surface: #18181b;
-    --color-surface-2: #202023;
-    --color-page: #0a0a0b;
-    --color-ink-primary: #f5f5f6;
-    --color-ink-secondary: #a6a7ad;
-    --color-ink-muted: #717278;
-    --color-track: #29292d;
-    --color-hairline: #29292d;
+    --color-surface: #211a13;
+    --color-surface-2: #2a2118;
+    --color-page: #16120d;
+    --color-ink-primary: #f5eee0;
+    --color-ink-secondary: #bcae97;
+    --color-ink-muted: #897c67;
+    --color-track: #392e21;
+    --color-hairline: #392e21;
     --color-delta-good: #0ca30c;
     --color-delta-bad: #e66767;
-    --color-accent: #4c92e8;
-    --color-accent-wash: #17233a;
-    --color-inverted-text: #0a0a0b;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.3), 0 16px 32px -12px rgba(0, 0, 0, 0.5);
+    --color-accent: #dd6a3a;
+    --color-accent-wash: #392318;
+    --color-inverted-text: #16120d;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.45), 0 6px 16px -6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.35), 0 20px 40px -14px rgba(0, 0, 0, 0.55);
   }
 }
 :root[data-theme='dark'] {
-  --color-surface: #18181b;
-  --color-surface-2: #202023;
-  --color-page: #0a0a0b;
-  --color-ink-primary: #f5f5f6;
-  --color-ink-secondary: #a6a7ad;
-  --color-ink-muted: #717278;
-  --color-track: #29292d;
-  --color-hairline: #29292d;
+  --color-surface: #211a13;
+  --color-surface-2: #2a2118;
+  --color-page: #16120d;
+  --color-ink-primary: #f5eee0;
+  --color-ink-secondary: #bcae97;
+  --color-ink-muted: #897c67;
+  --color-track: #392e21;
+  --color-hairline: #392e21;
   --color-delta-good: #0ca30c;
   --color-delta-bad: #e66767;
-  --color-accent: #4c92e8;
-  --color-accent-wash: #17233a;
-  --color-inverted-text: #0a0a0b;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.3), 0 16px 32px -12px rgba(0, 0, 0, 0.5);
+  --color-accent: #dd6a3a;
+  --color-accent-wash: #392318;
+  --color-inverted-text: #16120d;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.45), 0 6px 16px -6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.35), 0 20px 40px -14px rgba(0, 0, 0, 0.55);
 }
 
 * {

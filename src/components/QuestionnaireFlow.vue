@@ -98,7 +98,12 @@ function back() {
             <div class="text-xs font-medium tracking-wide text-[var(--color-ink-muted)]">
               STEP {{ stepIndex + 1 }} OF {{ STEPS.length }}
             </div>
-            <h1 class="text-xl font-semibold text-[var(--color-ink-primary)] leading-tight">{{ step.title }}</h1>
+            <h1
+              class="text-2xl text-[var(--color-ink-primary)] leading-tight"
+              style="font-family: var(--font-serif); font-weight: 500"
+            >
+              {{ step.title }}
+            </h1>
           </div>
         </div>
         <p class="-mt-4 mb-6 text-sm text-[var(--color-ink-secondary)]">{{ step.subtitle }}</p>
