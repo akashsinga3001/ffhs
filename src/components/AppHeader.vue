@@ -1,5 +1,5 @@
 <script setup>
-import Icon from './Icon.vue'
+import Logo from './Logo.vue'
 
 defineProps({
   showNav: { type: Boolean, default: false },
@@ -13,12 +13,7 @@ defineProps({
   >
     <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-3.5">
       <div class="flex items-center gap-2">
-        <div
-          class="flex h-7 w-7 items-center justify-center rounded-lg"
-          :style="{ backgroundColor: 'var(--color-ink-primary)', color: 'var(--color-inverted-text)' }"
-        >
-          <Icon name="shield-check" :size="15" />
-        </div>
+        <Logo :size="26" />
         <span class="text-sm font-semibold tracking-tight text-[var(--color-ink-primary)]">FFHS</span>
       </div>
 

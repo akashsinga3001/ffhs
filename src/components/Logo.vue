@@ -1,0 +1,19 @@
+<script setup>
+defineProps({
+  size: { type: [Number, String], default: 28 },
+})
+</script>
+
+<template>
+  <svg :width="size" :height="size" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="32" height="32" rx="8" :fill="'var(--color-accent)'" />
+    <path
+      d="M8 20h4l2-10 2 10h8l6-13"
+      fill="none"
+      stroke="white"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+</template>
