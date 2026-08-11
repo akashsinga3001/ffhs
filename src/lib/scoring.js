@@ -3,9 +3,19 @@
 // Input field names match the "Inputs" section of the spec (snake_case) so the
 // two stay auditable against each other.
 
-/** Piecewise-linear interpolation over ascending [x, y] breakpoints, flat-clamped at both ends. */
+/**
+ * Piecewise-linear interpolation over ascending [x, y] breakpoints, flat-clamped at both ends.
+ * A non-finite value (NaN, +/-Infinity — e.g. a ratio whose denominator collapsed to 0) always
+ * resolves to the curve's WORST score, not simply its first breakpoint: on a decreasing curve
+ * (higher ratio = worse, e.g. every Debt pillar metric) the first breakpoint is the BEST score,
+ * so falling back to it would silently reward missing/undefined data instead of penalizing it.
+ */
 function piecewiseLinear(value, points) {
-  if (!Number.isFinite(value)) return points[0][1]
+  if (!Number.isFinite(value)) {
+    const first = points[0][1]
+    const last = points[points.length - 1][1]
+    return first <= last ? first : last
+  }
   if (value <= points[0][0]) return points[0][1]
   const last = points[points.length - 1]
   if (value >= last[0]) return last[1]
@@ -140,12 +150,12 @@ const DEFAULT_INTEREST_RATES = {
 export function estimateMonthlyInterest(inputs) {
   const breakdown = inputs.debt_breakdown ?? {}
   if (Number.isFinite(inputs.blended_interest_rate_override)) {
-    const totalOutstandingDebt = Object.values(breakdown).reduce((a, b) => a + (b || 0), 0)
+    const totalOutstandingDebt = Object.values(breakdown).reduce((a, b) => a + Math.max(0, b || 0), 0)
     return (totalOutstandingDebt * inputs.blended_interest_rate_override) / 12
   }
   let monthlyInterest = 0
   for (const [category, rate] of Object.entries(DEFAULT_INTEREST_RATES)) {
-    monthlyInterest += (breakdown[category] ?? 0) * rate / 12
+    monthlyInterest += Math.max(0, breakdown[category] ?? 0) * rate / 12
   }
   return monthlyInterest
 }
@@ -156,9 +166,11 @@ export function scoreDebt(inputs) {
   // Total outstanding debt is derived from the category breakdown rather than
   // collected as a separate field — one number to enter, and it can't drift
   // out of sync with the breakdown it's supposed to summarize.
-  const totalOutstandingDebt = Object.values(breakdown).reduce((a, b) => a + (b || 0), 0)
+  const totalOutstandingDebt = Object.values(breakdown).reduce((a, b) => a + Math.max(0, b || 0), 0)
 
-  const dti = safeRatio(inputs.monthly_EMI_total, income)
+  // whenZero: Infinity (not the default 0) — a zero/undefined income with a real EMI to pay is
+  // maximally risky, not risk-free. Mirrors the same pattern already used for debtToAssets below.
+  const dti = safeRatio(inputs.monthly_EMI_total, income, inputs.monthly_EMI_total > 0 ? Infinity : 0)
   const dtiScore = piecewiseLinear(dti, [
     [0, 60], [0.2, 50], [0.35, 35], [0.5, 15], [0.6, 0],
   ])
@@ -175,12 +187,13 @@ export function scoreDebt(inputs) {
   ])
 
   const estimatedMonthlyInterest = estimateMonthlyInterest(inputs)
-  const interestBurden = safeRatio(estimatedMonthlyInterest, income)
+  // Same whenZero: Infinity treatment as debtToIncome above, and for the same reason.
+  const interestBurden = safeRatio(estimatedMonthlyInterest, income, estimatedMonthlyInterest > 0 ? Infinity : 0)
   const interestScore = piecewiseLinear(interestBurden, [
     [0, 70], [0.05, 55], [0.1, 35], [0.15, 15], [0.2, 0],
   ])
 
-  const badDebtRatio = safeRatio(breakdown.personal_loan_and_cc_revolving ?? 0, totalOutstandingDebt)
+  const badDebtRatio = safeRatio(Math.max(0, breakdown.personal_loan_and_cc_revolving ?? 0), totalOutstandingDebt)
   const badDebtScore = piecewiseLinear(badDebtRatio, [
     [0, 60], [0.1, 50], [0.25, 30], [0.5, 10], [0.75, 0],
   ])

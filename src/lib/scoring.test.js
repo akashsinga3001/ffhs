@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { computeFFHS } from './scoring.js'
+import { computeFFHS, scoreDebt } from './scoring.js'
 
 // Synthetic Indian family profiles — sanity-checks that intuitive financial
 // situations produce intuitive scores, per docs/METHODOLOGY.md Phase 1 step 9.
@@ -339,5 +339,66 @@ describe('Profile: single freelancer, no dependents, debt-free — edge cases', 
 
   it('momentum is neutral — everything flat', () => {
     expect(result.momentum.rating).toBe('Neutral')
+  })
+})
+
+// Regression coverage for a systemic bug found during the FFHS_VALIDATION_REPORT audit:
+// on the Debt pillar's decreasing curves (higher ratio = worse), an undefined/zero-denominator
+// ratio was silently resolving to the curve's *best* score instead of its worst, across three
+// independent sites. Fixed in piecewiseLinear (direction-aware non-finite fallback), in
+// debtToIncome/interestBurden's safeRatio calls (Infinity sentinel on zero income, matching the
+// pattern debtToAssets already used), and by clamping debt-breakdown category values to >= 0
+// before summing (which also fixed a numeric-string concatenation bug as a side effect).
+describe('Regression: Debt pillar must not reward undefined/zero-denominator ratios', () => {
+  it('debt with zero recorded gross assets scores near the WORST Debt-to-Assets, not the best', () => {
+    const r = scoreDebt({
+      monthly_income_total: 100000, monthly_EMI_total: 15000,
+      debt_breakdown: { home_loan: 1000000 },
+      primary_residence_value: 0, investment_property_value: 0, investments_total: 0,
+      emergency_fund_liquid: 0, other_liquid_assets: 0,
+    })
+    expect(r.metrics.debtToAssets.score).toBe(0)
+  })
+
+  it('higher gross assets never score worse than lower gross assets, debt held constant', () => {
+    const debtFixture = (assets) => scoreDebt({
+      monthly_income_total: 200000, monthly_EMI_total: 20000,
+      debt_breakdown: { home_loan: 2000000 }, blended_interest_rate_override: 0.085,
+      primary_residence_value: assets, investments_total: 0, emergency_fund_liquid: 0,
+      other_liquid_assets: 0, investment_property_value: 0,
+    })
+    expect(debtFixture(10000000).total).toBeGreaterThanOrEqual(debtFixture(0).total)
+  })
+
+  it('zero income with an active EMI scores the WORST Debt-to-Income and Interest Burden, not the best', () => {
+    const r = scoreDebt({
+      monthly_income_total: 0, monthly_EMI_total: 20000,
+      debt_breakdown: { home_loan: 2000000 },
+      primary_residence_value: 5000000, investments_total: 500000,
+      emergency_fund_liquid: 180000, other_liquid_assets: 60000,
+    })
+    expect(r.metrics.debtToIncome.score).toBe(0)
+    expect(r.metrics.interestBurden.score).toBe(0)
+  })
+
+  it('a negative debt-breakdown entry cannot deflate total debt or invert the score', () => {
+    const r = scoreDebt({
+      monthly_income_total: 150000, monthly_EMI_total: 5000,
+      debt_breakdown: { home_loan: -500000, personal_loan_and_cc_revolving: 300000 },
+      primary_residence_value: 5000000, investments_total: 500000,
+      emergency_fund_liquid: 180000, other_liquid_assets: 60000,
+    })
+    expect(r.metrics.debtToAssets.value).toBeGreaterThanOrEqual(0)
+    expect(r.metrics.badDebtRatio.value).toBeGreaterThanOrEqual(0)
+  })
+
+  it('numeric-string debt-breakdown values are summed correctly, not concatenated', () => {
+    const r = scoreDebt({
+      monthly_income_total: 150000, monthly_EMI_total: 40000,
+      debt_breakdown: { home_loan: '1500000', vehicle_loan: '500000' },
+      primary_residence_value: 5000000, investments_total: 500000,
+      emergency_fund_liquid: 180000, other_liquid_assets: 60000,
+    })
+    expect(r.metrics.debtToAssets.value).toBeCloseTo(2000000 / 5740000, 6)
   })
 })
