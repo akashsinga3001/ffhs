@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ffhs-nu.vercel.app/sitemap.xml

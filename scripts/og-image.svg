@@ -1,0 +1,28 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#faf6ee"/>
+      <stop offset="1" stop-color="#f2ebdd"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- logo mark -->
+  <rect x="90" y="88" width="72" height="72" rx="18" fill="#c1502e"/>
+  <path d="M108 128h9l4.5-22.5L126 128h18l13.5-29" fill="none" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="90" y="240" font-family="Georgia, 'Iowan Old Style', serif" font-size="72" font-weight="600" fill="#221b13">Family Financial</text>
+  <text x="90" y="320" font-family="Georgia, 'Iowan Old Style', serif" font-size="72" font-weight="600" fill="#221b13">Health Score</text>
+
+  <text x="90" y="390" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#6c5f4d">One honest number for cash flow, liquidity,</text>
+  <text x="90" y="430" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#6c5f4d">debt, wealth &amp; risk — free, private, no login.</text>
+
+  <!-- score card accent -->
+  <rect x="870" y="380" width="240" height="150" rx="20" fill="#ffffff" stroke="#e5dac3" stroke-width="2"/>
+  <text x="990" y="450" font-family="Georgia, serif" font-size="56" font-weight="600" fill="#221b13" text-anchor="middle">782</text>
+  <text x="990" y="480" font-family="Arial, sans-serif" font-size="18" fill="#9c8f78" text-anchor="middle">/ 1000</text>
+  <rect x="905" y="497" width="170" height="10" rx="5" fill="#0ca30c" opacity="0.16"/>
+  <rect x="905" y="497" width="140" height="10" rx="5" fill="#0ca30c"/>
+
+  <text x="90" y="580" font-family="Arial, sans-serif" font-size="22" fill="#9c8f78">ffhs-nu.vercel.app</text>
+</svg>

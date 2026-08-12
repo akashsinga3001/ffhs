@@ -23,6 +23,14 @@ const PREVIEW_PILLARS = [
   { label: 'Wealth', pct: 84 },
   { label: 'Risk', pct: 46 },
 ]
+
+const PILLARS = [
+  { icon: 'wallet', title: 'Cash Flow', desc: 'Is more coming in than going out, every month, reliably?' },
+  { icon: 'droplet', title: 'Liquidity', desc: 'If income stopped tomorrow, how many months could the household actually survive?' },
+  { icon: 'credit-card', title: 'Debt', desc: "Not just how much you owe, but whether it's building an asset or draining one." },
+  { icon: 'trending-up', title: 'Wealth', desc: 'Is money actually accumulating — investments, retirement, equity — or just cycling through the account?' },
+  { icon: 'shield', title: 'Risk', desc: 'Is the household one bad diagnosis or one job loss away from undoing everything else?' },
+]
 </script>
 
 <template>
@@ -134,6 +142,49 @@ const PREVIEW_PILLARS = [
         <p class="mt-4 text-base leading-relaxed text-[var(--color-ink-secondary)]">
           It's free because I don't want your money — I built this to answer a question for my
           own family, and it turned out other families were asking the same one.
+        </p>
+      </div>
+    </div>
+
+    <!-- why one number, not three -->
+    <div id="why-five-pillars" class="px-6 py-16 scroll-mt-16">
+      <div class="mx-auto max-w-3xl">
+        <div class="mb-10">
+          <h2 class="text-2xl sm:text-3xl text-[var(--color-ink-primary)]" style="font-family: var(--font-serif); font-weight: 480">
+            Why one number, not three.
+          </h2>
+          <p class="mt-3 text-base leading-relaxed text-[var(--color-ink-secondary)]">
+            Most people check their financial health with whatever's closest at hand: a credit
+            score, a savings rate, a debt-to-income ratio. Each tells you something true — and
+            each is dangerously incomplete on its own. A credit score measures whether lenders
+            trust you to repay, not whether you're building anything of your own. A high savings
+            rate looks great until you notice it's sitting next to a maxed-out credit card. A low
+            debt-to-income ratio can hide a household with no emergency fund at all. None of these
+            numbers talk to each other — that's the gap FFHS is built to close.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div
+            v-for="p in PILLARS"
+            :key="p.title"
+            class="rounded-2xl p-5"
+            :style="{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-hairline)', boxShadow: 'var(--shadow-sm)' }"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                :style="{ backgroundColor: 'var(--color-accent-wash)', color: 'var(--color-accent)' }"
+              >
+                <Icon :name="p.icon" :size="17" />
+              </div>
+              <div class="text-sm font-semibold text-[var(--color-ink-primary)]">{{ p.title }}</div>
+            </div>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--color-ink-secondary)]">{{ p.desc }}</p>
+          </div>
+        </div>
+        <p class="mt-6 text-sm leading-relaxed text-[var(--color-ink-secondary)]">
+          A family can score well on any single pillar and still be exposed everywhere else. FFHS
+          scores all five together, so "am I okay?" gets an answer that's actually load-bearing.
         </p>
       </div>
     </div>
